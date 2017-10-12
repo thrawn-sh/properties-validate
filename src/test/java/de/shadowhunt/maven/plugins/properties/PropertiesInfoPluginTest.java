@@ -43,7 +43,7 @@ public class PropertiesInfoPluginTest {
     public void testError() throws Exception {
         final PropertiesInfoPlugin plugin = new PropertiesInfoPlugin();
         plugin.setProject(projectMock);
-        plugin.setMessagePropertiesPattern(Collections.singletonList((String) null));
+        plugin.setMessagePropertiesPatterns(Collections.singletonList((String) null));
         plugin.execute();
     }
 
@@ -53,7 +53,7 @@ public class PropertiesInfoPluginTest {
         plugin.setProject(projectMock);
         plugin.setEncoding(ValidateEncodingTest.PROPERTIES_ENCODING);
         plugin.setFailBuild(true);
-        plugin.setMessagePropertiesPattern(Collections.singletonList("src/test/resources/encoding/*.properties"));
+        plugin.setMessagePropertiesPatterns(Collections.singletonList("src/test/resources/encoding/*.properties"));
         plugin.execute();
         Assert.fail("must not complete");
     }
@@ -65,7 +65,7 @@ public class PropertiesInfoPluginTest {
         plugin.setEncoding(ValidateEncodingTest.PROPERTIES_ENCODING);
         plugin.setFailBuild(true);
         plugin.setMaster(ValidateKeysTest.MASTER);
-        plugin.setMessagePropertiesPattern(Collections.singletonList("src/test/resources/keys/*.properties"));
+        plugin.setMessagePropertiesPatterns(Collections.singletonList("src/test/resources/keys/*.properties"));
         plugin.execute();
         Assert.fail("must not complete");
     }
@@ -76,7 +76,7 @@ public class PropertiesInfoPluginTest {
         plugin.setProject(projectMock);
         plugin.setEncoding(ValidateEncodingTest.PROPERTIES_ENCODING);
         plugin.setFailBuild(false);
-        plugin.setMessagePropertiesPattern(Collections.singletonList("src/test/resources/encoding/*.properties"));
+        plugin.setMessagePropertiesPatterns(Collections.singletonList("src/test/resources/encoding/*.properties"));
         plugin.execute();
 
     }
@@ -88,7 +88,7 @@ public class PropertiesInfoPluginTest {
         plugin.setEncoding(ValidateEncodingTest.PROPERTIES_ENCODING);
         plugin.setMaster(ValidateKeysTest.MASTER);
         plugin.setFailBuild(false);
-        plugin.setMessagePropertiesPattern(Collections.singletonList("src/test/resources/keys/*.properties"));
+        plugin.setMessagePropertiesPatterns(Collections.singletonList("src/test/resources/keys/*.properties"));
         plugin.execute();
     }
 
@@ -97,7 +97,7 @@ public class PropertiesInfoPluginTest {
         final PropertiesInfoPlugin plugin = new PropertiesInfoPlugin();
         plugin.setProject(projectMock);
         final List<String> empty = Collections.emptyList();
-        plugin.setMessagePropertiesPattern(empty);
+        plugin.setMessagePropertiesPatterns(empty);
         plugin.execute();
     }
 
@@ -105,7 +105,7 @@ public class PropertiesInfoPluginTest {
     public void testPatternsNone() throws Exception {
         final PropertiesInfoPlugin plugin = new PropertiesInfoPlugin();
         plugin.setProject(projectMock);
-        plugin.setMessagePropertiesPattern(null);
+        plugin.setMessagePropertiesPatterns(null);
         plugin.execute();
     }
 }

@@ -37,9 +37,9 @@ import de.shadowhunt.maven.plugins.properties.ValidateKeys.KeysValidationResult;
 
 /**
  * Validate properties files for completness accross languages and valid encoding.<br/>
- * Call <code>mvn properties:validate</code> to validate.
+ * Call <code>mvn properties:verify</code> to validate.
  */
-@Mojo(name = "validate", defaultPhase = LifecyclePhase.VALIDATE, threadSafe = true)
+@Mojo(name = "verify", defaultPhase = LifecyclePhase.VERIFY, threadSafe = true)
 public class PropertiesInfoPlugin extends AbstractMojo {
 
     @Parameter(required = true, defaultValue = "ISO-8859-1", readonly = true)
@@ -52,14 +52,14 @@ public class PropertiesInfoPlugin extends AbstractMojo {
     private File master;
 
     @Parameter(required = true, defaultValue = "src/main/resources/messages*.properties", readonly = true)
-    private List<String> messagePropertiesPattern;
+    private List<String> messagePropertiesPatterns;
 
     @Parameter(required = true, defaultValue = "${project}", readonly = true)
     private MavenProject project;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        final List<String> patterns = getMessagePropertiesPattern();
+        final List<String> patterns = getMessagePropertiesPatterns();
         if ((patterns == null) || patterns.isEmpty()) {
             // nothing to
             return;
@@ -129,8 +129,8 @@ public class PropertiesInfoPlugin extends AbstractMojo {
         return master;
     }
 
-    public List<String> getMessagePropertiesPattern() {
-        return messagePropertiesPattern;
+    public List<String> getMessagePropertiesPatterns() {
+        return messagePropertiesPatterns;
     }
 
     public MavenProject getProject() {
@@ -153,8 +153,8 @@ public class PropertiesInfoPlugin extends AbstractMojo {
         this.master = master;
     }
 
-    public void setMessagePropertiesPattern(final List<String> messagePropertiesPattern) {
-        this.messagePropertiesPattern = messagePropertiesPattern;
+    public void setMessagePropertiesPatterns(final List<String> messagePropertiesPatterns) {
+        this.messagePropertiesPatterns = messagePropertiesPatterns;
     }
 
     public void setProject(final MavenProject project) {
