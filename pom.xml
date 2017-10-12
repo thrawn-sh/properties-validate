@@ -363,7 +363,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <helpPackageName>de.shadowhunt.maven.plugins.packageinfo</helpPackageName>
+                    <helpPackageName>de.shadowhunt.maven.plugins.properties</helpPackageName>
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
                 </configuration>
             </plugin>
