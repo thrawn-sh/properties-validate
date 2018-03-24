@@ -514,7 +514,7 @@
                         <include>de/shadowhunt/**/*</include>
                     </includes>
                     <excludes>
-                        <exclude>de/shadowhunt/maven/plugins/properties/HelpMojo</exclude>
+                        <exclude>de/shadowhunt/maven/plugins/properties/HelpMojo.class</exclude>
                     </excludes>
                 </configuration>
                 <executions>
