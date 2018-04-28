@@ -2,7 +2,7 @@
 <!--
 
     Maven properties Plugin - Validates properties files
-    Copyright © 2017 - 2017 shadowhunt (dev@shadowhunt.de)
+    Copyright © 2017-2018 shadowhunt (dev@shadowhunt.de)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -187,15 +187,35 @@
                 <configuration>
                     <excludes>
                         <exclude>**/.*</exclude>
+                        <exclude>Jenkinsfile</exclude>
                         <exclude>LICENSE</exclude>
                         <exclude>README</exclude>
                     </excludes>
                     <header>com/mycila/maven/plugin/license/templates/GPL-3.txt</header>
                     <properties>
                         <owner>${project.organization.name}</owner>
-                        <project.inceptionYear>${project.inceptionYear} - 2017</project.inceptionYear>
+                        <project.inceptionYear>${build.copyright.year}</project.inceptionYear>
                         <email>dev@shadowhunt.de</email>
                     </properties>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.redhat.rcm.maven.plugin</groupId>
+                <artifactId>buildmetadata-maven-plugin</artifactId>
+                <version>1.7.0</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>provide-buildmetadata</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <buildDatePattern>yyyy-MM-dd</buildDatePattern>
+                    <createPropertiesReport>false</createPropertiesReport>
+                    <createXmlReport>false</createXmlReport>
+                    <forceNewProperties>true</forceNewProperties>
                 </configuration>
             </plugin>
             <plugin>
@@ -229,26 +249,46 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>verify</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <configLocation>assets/dev/checkstyle.xml</configLocation>
+                    <headerLocation>LICENSE</headerLocation>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <suppressionsLocation>assets/dev/checkstyle-suppressions.xml</suppressionsLocation>
+                    <violationSeverity>warning</violationSeverity>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
                 <configuration>
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <failOnWarning>true</failOnWarning>
                     <proc>none</proc>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <compilerArgs>
-                        <arg>-Xlint:all</arg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.0.2</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>analyze</id>
@@ -266,6 +306,26 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.8.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.0.4</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -305,7 +365,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-help-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.0.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -318,7 +378,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
+                <version>3.1.0</version>
                 <configuration>
                     <archive>
                         <index>true</index>
@@ -326,7 +386,8 @@
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
                         <manifestEntries>
-                            <Implementation-Build>${buildNumber}</Implementation-Build>
+                            <Built-By>dev@shadowhunt.de</Built-By>
+                            <Implementation-Build>${build.version.full}</Implementation-Build>
                         </manifestEntries>
                     </archive>
                     <skipIfEmpty>true</skipIfEmpty>
@@ -401,48 +462,6 @@
                         <version>3.0.0</version>
                     </dependency>
                 </dependencies>
-                <configuration>
-                    <reportPlugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-plugin-plugin</artifactId>
-                            <version>3.5</version>
-                        </plugin>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-project-info-reports-plugin</artifactId>
-                            <version>2.9</version>
-                            <reportSets>
-                                <reportSet>
-                                    <reports>
-                                        <report>summary</report>
-                                        <report>scm</report>
-                                        <report>dependency-info</report>
-                                        <report>dependencies</report>
-                                        <report>plugins</report>
-                                        <report>license</report>
-
-                                        <report>dependency-convergence</report>
-                                        <report>dependency-management</report>
-                                        <report>modules</report>
-                                    </reports>
-                                </reportSet>
-                            </reportSets>
-                            <configuration>
-                                <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
-                                <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-                            </configuration>
-                        </plugin>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-surefire-report-plugin</artifactId>
-                            <version>2.19.1</version>
-                            <configuration>
-                                <linkXRef>false</linkXRef>
-                            </configuration>
-                        </plugin>
-                    </reportPlugins>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -489,16 +508,22 @@
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.4</version>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>3.0.5</version>
                 <executions>
                     <execution>
-                        <phase>validate</phase>
+                        <id>verify</id>
+                        <phase>verify</phase>
                         <goals>
-                            <goal>create</goal>
+                            <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <effort>Max</effort>
+                    <xmlOutput>true</xmlOutput>
+                    <excludeFilterFile>assets/dev/findbugs-exclude.xml</excludeFilterFile>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -509,14 +534,6 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.1</version>
-                <configuration>
-                    <includes>
-                        <include>de/shadowhunt/**/*</include>
-                    </includes>
-                    <excludes>
-                        <exclude>de/shadowhunt/maven/plugins/properties/HelpMojo.class</exclude>
-                    </excludes>
-                </configuration>
                 <executions>
                     <execution>
                         <id>ut</id>
@@ -541,6 +558,14 @@
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <includes>
+                        <include>de/shadowhunt/maven/plugins/properties/**/*</include>
+                    </includes>
+                    <excludes>
+                        <exclude>de/shadowhunt/maven/plugins/properties/HelpMojo.class</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
         <!-- }}}1 -->

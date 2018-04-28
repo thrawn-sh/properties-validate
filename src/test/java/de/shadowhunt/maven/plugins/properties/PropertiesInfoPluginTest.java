@@ -1,6 +1,6 @@
 /**
  * Maven properties Plugin - Validates properties files
- * Copyright © 2017 - 2017 shadowhunt (dev@shadowhunt.de)
+ * Copyright © 2017-2018 shadowhunt (dev@shadowhunt.de)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
