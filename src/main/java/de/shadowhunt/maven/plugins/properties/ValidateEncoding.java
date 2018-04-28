@@ -31,9 +31,9 @@ import org.apache.commons.io.IOUtils;
 
 public class ValidateEncoding {
 
-    private final CharsetEncoder encoder;
-
     private static final Charset UTF8 = Charset.forName("UTF-8");
+
+    private final CharsetEncoder encoder;
 
     public ValidateEncoding(final String encoding) {
         final Charset charset = Charset.forName(encoding);
@@ -41,19 +41,14 @@ public class ValidateEncoding {
     }
 
     public List<File> validate(final Collection<File> files) throws IOException {
-        final List<File> result = new ArrayList<File>();
+        final List<File> result = new ArrayList<>();
 
         for (final File file : files) {
-            InputStream input = null;
-            try {
-                input = new FileInputStream(file);
-
+            try (InputStream input = new FileInputStream(file)) {
                 final String content = IOUtils.toString(input, UTF8);
                 if (!encoder.canEncode(content)) {
                     result.add(file);
                 }
-            } finally {
-                IOUtils.closeQuietly(input);
             }
         }
 

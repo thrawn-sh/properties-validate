@@ -28,8 +28,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.io.IOUtils;
-
 public class ValidateKeys {
 
     static class KeysValidationResult {
@@ -61,15 +59,11 @@ public class ValidateKeys {
 
     private static Set<String> getKeys(final File file) throws IOException {
         final Properties properties = new Properties();
-        InputStream input = null;
-        try {
-            input = new FileInputStream(file);
+        try (InputStream input = new FileInputStream(file)) {
             properties.load(input);
-        } finally {
-            IOUtils.closeQuietly(input);
         }
 
-        final Set<String> keys = new TreeSet<String>();
+        final Set<String> keys = new TreeSet<>();
         for (final Object key : properties.keySet()) {
             keys.add(key.toString());
         }
@@ -83,13 +77,13 @@ public class ValidateKeys {
     }
 
     public List<KeysValidationResult> validate(final Collection<File> files) throws IOException {
-        final List<KeysValidationResult> result = new ArrayList<KeysValidationResult>();
+        final List<KeysValidationResult> result = new ArrayList<>();
 
         for (final File file : files) {
             final Set<String> keys = getKeys(file);
 
-            final Set<String> missing = new TreeSet<String>(masterKeys);
-            final Set<String> additional = new TreeSet<String>(keys);
+            final Set<String> missing = new TreeSet<>(masterKeys);
+            final Set<String> additional = new TreeSet<>(keys);
             missing.removeAll(keys);
             additional.removeAll(masterKeys);
 
