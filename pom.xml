@@ -87,7 +87,7 @@
 
     <properties>
         <jacoco.itReportPath>${project.basedir}/target/jacoco-it.exec</jacoco.itReportPath>
-        <jacoco.reportPath>${project.basedir}/target/jacoco-ut.exec</jacoco.reportPath>
+        <jacoco.utReportPath>${project.basedir}/target/jacoco-ut.exec</jacoco.utReportPath>
 
         <maven.api.version>3.0</maven.api.version>
 
@@ -548,7 +548,7 @@
                         </goals>
                         <configuration>
                             <propertyName>jacoco.agent.argLineUT</propertyName>
-                            <destFile>${jacoco.reportPath}</destFile>
+                            <destFile>${jacoco.utReportPath}</destFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -562,10 +562,27 @@
                             <destFile>${jacoco.itReportPath}</destFile>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>merge</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>merge</goal>
+                        </goals>
+                        <configuration>
+                            <fileSets>
+                                <fileSet>
+                                    <directory>${project.build.directory}</directory>
+                                    <includes>
+                                        <include>jacoco-*.exec</include>
+                                    </includes>
+                                </fileSet>
+                            </fileSets>
+                        </configuration>
+                    </execution>
                 </executions>
                 <configuration>
                     <includes>
-                        <include>de/shadowhunt/maven/plugins/properties/**/*.class</include>
+                        <include>de/shadowhunt/maven/plugins/properties/**</include>
                     </includes>
                     <excludes>
                         <exclude>de/shadowhunt/maven/plugins/properties/HelpMojo.class</exclude>
