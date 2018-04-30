@@ -426,6 +426,9 @@
                         <goals>
                             <goal>helpmojo</goal>
                         </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
+                        </configuration>
                     </execution>
                 </executions>
                 <configuration>
