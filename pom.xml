@@ -407,6 +407,8 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <!-- helpmojo generates javadoc with self-closing tags -->
+                    <doclint>none</doclint>
                     <quiet>true</quiet>
                 </configuration>
             </plugin>
