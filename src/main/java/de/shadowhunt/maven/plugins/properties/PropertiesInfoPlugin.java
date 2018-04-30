@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import de.shadowhunt.maven.plugins.properties.ValidateKeys.KeysValidationResult;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -82,8 +81,8 @@ public class PropertiesInfoPlugin extends AbstractMojo {
 
             if (getMaster() != null) {
                 final ValidateKeys validateKeys = new ValidateKeys(getMaster());
-                final List<KeysValidationResult> keysResult = validateKeys.validate(propertyFiles);
-                for (final KeysValidationResult result : keysResult) {
+                final List<ValidateKeys.KeysValidationResult> keysResult = validateKeys.validate(propertyFiles);
+                for (final ValidateKeys.KeysValidationResult result : keysResult) {
                     final File file = result.getFile();
 
                     final Set<String> additional = result.getAdditional();
