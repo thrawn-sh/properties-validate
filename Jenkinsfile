@@ -33,7 +33,7 @@ pipeline {
             }
             post {
                 always {
-                    jacoco(classPattern: "**/target/classes", inclusionPattern: "**/de/shadowhunt/maven/plugins/properties/**/*.class")
+                    jacoco(execPattern: "**/jacoco.exec", exclusionPattern: "de/shadowhunt/maven/plugins/properties/HelpMojo.class", inclusionPattern: "de/shadowhunt/maven/plugins/properties/**/*")
                     junit(allowEmptyResults: true, keepLongStdio: true, testResults: "*/target/failsafe-reports/**/*.xml, */target/surefire-reports/**/*.xml")
                 }
                 failure {
