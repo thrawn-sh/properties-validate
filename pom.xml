@@ -565,7 +565,7 @@
                 </executions>
                 <configuration>
                     <includes>
-                        <include>de/shadowhunt/maven/plugins/properties/**/*</include>
+                        <include>de/shadowhunt/maven/plugins/properties/**/*.class</include>
                     </includes>
                     <excludes>
                         <exclude>de/shadowhunt/maven/plugins/properties/HelpMojo.class</exclude>
