@@ -18,11 +18,12 @@
 package de.shadowhunt.maven.plugins.properties;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -44,7 +45,8 @@ public class ValidateEncoding {
         final List<File> result = new ArrayList<>();
 
         for (final File file : files) {
-            try (InputStream input = new FileInputStream(file)) {
+            final Path path = file.toPath();
+            try (InputStream input = Files.newInputStream(path)) {
                 final String content = IOUtils.toString(input, UTF8);
                 if (!encoder.canEncode(content)) {
                     result.add(file);

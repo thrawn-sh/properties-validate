@@ -72,15 +72,15 @@ public class PropertiesInfoPlugin extends AbstractMojo {
 
             final Log log = getLog();
 
-            final ValidateEncoding validateEncoding = new ValidateEncoding(getEncoding());
+            final ValidateEncoding validateEncoding = new ValidateEncoding(encoding);
             final List<File> encodingResult = validateEncoding.validate(propertyFiles);
             for (final File file : encodingResult) {
                 fail = true;
-                log.warn("file " + file + " is not encoded in " + getEncoding());
+                log.warn("file " + file + " is not encoded in " + encoding);
             }
 
             if (getMaster() != null) {
-                final ValidateKeys validateKeys = new ValidateKeys(getMaster());
+                final ValidateKeys validateKeys = new ValidateKeys(master);
                 final List<ValidateKeys.KeysValidationResult> keysResult = validateKeys.validate(propertyFiles);
                 for (final ValidateKeys.KeysValidationResult result : keysResult) {
                     final File file = result.getFile();
@@ -98,7 +98,7 @@ public class PropertiesInfoPlugin extends AbstractMojo {
                     }
                 }
             }
-        } catch (final Exception e) {
+        } catch (final IOException e) {
             throw new MojoExecutionException("can not validate", e);
         }
 

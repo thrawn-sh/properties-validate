@@ -21,7 +21,6 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.junit.Assert;
@@ -37,14 +36,6 @@ public class PropertiesInfoPluginTest {
     public void setup() throws Exception {
         projectMock = Mockito.mock(MavenProject.class);
         Mockito.when(projectMock.getBasedir()).thenReturn(new File("."));
-    }
-
-    @Test(expected = MojoExecutionException.class)
-    public void testError() throws Exception {
-        final PropertiesInfoPlugin plugin = new PropertiesInfoPlugin();
-        plugin.setProject(projectMock);
-        plugin.setMessagePropertiesPatterns(Collections.singletonList((String) null));
-        plugin.execute();
     }
 
     @Test(expected = MojoFailureException.class)

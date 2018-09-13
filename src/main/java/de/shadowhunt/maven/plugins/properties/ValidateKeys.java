@@ -18,9 +18,10 @@
 package de.shadowhunt.maven.plugins.properties;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -59,13 +60,15 @@ public class ValidateKeys {
 
     private static Set<String> getKeys(final File file) throws IOException {
         final Properties properties = new Properties();
-        try (InputStream input = new FileInputStream(file)) {
+        final Path path = file.toPath();
+        try (InputStream input = Files.newInputStream(path)) {
             properties.load(input);
         }
 
         final Set<String> keys = new TreeSet<>();
         for (final Object key : properties.keySet()) {
-            keys.add(key.toString());
+            final String stringKey = key.toString();
+            keys.add(stringKey);
         }
         return keys;
     }
@@ -88,7 +91,8 @@ public class ValidateKeys {
             additional.removeAll(masterKeys);
 
             if (!(additional.isEmpty() && missing.isEmpty())) {
-                result.add(new KeysValidationResult(file, additional, missing));
+                final KeysValidationResult validationResult = new KeysValidationResult(file, additional, missing);
+                result.add(validationResult);
             }
         }
         return result;
