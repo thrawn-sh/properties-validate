@@ -91,6 +91,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
+    <prerequisites>
+        <maven>${maven.api.version}</maven>
+    </prerequisites>
+
     <!-- dependencies {{{1 -->
     <dependencies>
         <dependency>
