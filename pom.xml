@@ -85,7 +85,7 @@
         <jacoco.itReportPath>${project.basedir}/target/jacoco-it.exec</jacoco.itReportPath>
         <jacoco.utReportPath>${project.basedir}/target/jacoco-ut.exec</jacoco.utReportPath>
 
-        <maven.api.version>3.0</maven.api.version>
+        <maven.api.version>3.3.9</maven.api.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -323,7 +323,7 @@
                         <configuration>
                             <rules>
                                 <requireMavenVersion>
-                                    <version>3.3.9</version>
+                                    <version>${maven.api.version}</version>
                                 </requireMavenVersion>
                             </rules>
                         </configuration>
