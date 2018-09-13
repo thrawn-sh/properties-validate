@@ -57,18 +57,16 @@ public class PropertiesInfoPlugin extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        final List<String> patterns = getMessagePropertiesPatterns();
-        if ((patterns == null) || patterns.isEmpty()) {
+        if ((messagePropertiesPatterns == null) || messagePropertiesPatterns.isEmpty()) {
             // nothing to
             return;
         }
 
         boolean fail = false;
         try {
-            final MavenProject current = getProject();
-            final File basedir = current.getBasedir();
+            final File basedir = project.getBasedir();
 
-            final Set<File> propertyFiles = findPropertiesForPatterns(basedir, patterns);
+            final Set<File> propertyFiles = findPropertiesForPatterns(basedir, messagePropertiesPatterns);
 
             final Log log = getLog();
 
@@ -79,7 +77,7 @@ public class PropertiesInfoPlugin extends AbstractMojo {
                 log.warn("file " + file + " is not encoded in " + encoding);
             }
 
-            if (getMaster() != null) {
+            if (master != null) {
                 final ValidateKeys validateKeys = new ValidateKeys(master);
                 final List<ValidateKeys.KeysValidationResult> keysResult = validateKeys.validate(propertyFiles);
                 for (final ValidateKeys.KeysValidationResult result : keysResult) {
@@ -102,7 +100,7 @@ public class PropertiesInfoPlugin extends AbstractMojo {
             throw new MojoExecutionException("can not validate", e);
         }
 
-        if (isFailBuild() && fail) {
+        if (failBuild && fail) {
             throw new MojoFailureException("invalid properties files found");
         }
     }
@@ -114,26 +112,6 @@ public class PropertiesInfoPlugin extends AbstractMojo {
             propertiesFiles.addAll(files);
         }
         return propertiesFiles;
-    }
-
-    public String getEncoding() {
-        return encoding;
-    }
-
-    public File getMaster() {
-        return master;
-    }
-
-    public List<String> getMessagePropertiesPatterns() {
-        return messagePropertiesPatterns;
-    }
-
-    public MavenProject getProject() {
-        return project;
-    }
-
-    public boolean isFailBuild() {
-        return failBuild;
     }
 
     public void setEncoding(final String encoding) {
